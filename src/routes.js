@@ -9,7 +9,7 @@ export const useRoutes = isAuthenticated => {
         return (
             <Routes>
                 <Route path='/contacts' element={<ContactsPage />}></Route>
-                <Route path='/contacts/:id' element={<EditPage />}></Route>
+                <Route path='/post/:id' element={<EditPage />}></Route>
                 <Route path="*" element={<Navigate replace to="/contacts" />} />
             </Routes>
         );        

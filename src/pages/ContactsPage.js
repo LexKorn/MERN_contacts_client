@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+
 // import { useHttp } from '../hooks/http.hook';
 // import { AuthContext } from '../context/AuthContext';
+import { InputFields } from '../components/InputFields';
 import { BACK_URL } from '../config/default';
 
 import './contactsPage.sass';
@@ -84,30 +86,14 @@ export const ContactsPage = () => {
 
     return (
         <div>
-            <div className='row'>
-                <div className='col s6 offset-s3'>
-                    <h1>Создай контакт</h1>
-                    <div className="input-field">
-                        <input 
-                            placeholder="Имя" 
-                            id="name" 
-                            type="text" 
-                            value={name}
-                            onChange={e => setName(e.target.value)} />
-                        <label htmlFor='link'>Введите имя</label>
-                    </div>
-                    <div className="input-field">
-                        <input 
-                            placeholder="Телефон" 
-                            id="phone" 
-                            type="text" 
-                            value={phone}
-                            onChange={e => setPhone(e.target.value)} />
-                        <label htmlFor='link'>Введите телефон</label>
-                    </div>
-                    <button className="blue darken-1 btn" onClick={createContactHandler}>Создать</button> 
-                </div>                           
-            </div>   
+            <InputFields 
+                name={name} 
+                setName={setName} 
+                phone={phone} 
+                setPhone={setPhone} 
+                handler={createContactHandler} 
+                title='Создай контакт'
+                button='Создать' /> 
             <div className='row'>
                 <ul className="col s6 offset-s3 collection z-depth-4">
                     {contacts.map((contact) => (
@@ -117,7 +103,7 @@ export const ContactsPage = () => {
                                 <div>{contact.phone}</div> 
                             </div>                           
                             <div className="contact_icons">
-                                <NavLink to={`/contacts/${contact._id}`}>
+                                <NavLink to={`/post/${contact._id}`}>
                                     <i className="material-icons">mode_edit</i>
                                 </NavLink>    
                                 <i className="material-icons" 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-// import { Loader } from '../components/Loader';
-// import { InputFields } from '../components/InputFields';
 
+import { InputFields } from '../components/InputFields';
 import { BACK_URL } from '../config/default';
+// import { Loader } from '../components/Loader';
 
 export function EditPage() {
 	const { id } = useParams();
@@ -17,7 +17,7 @@ export function EditPage() {
     }, []);
 
 	useEffect(() => {
-		fetch(`${BACK_URL}/post-update/${id}`)
+		fetch(`${BACK_URL}/post/${id}`)
 			.then((json) => json.json())
 			.then((data) => {
 				console.log(data);
@@ -51,38 +51,17 @@ export function EditPage() {
 		}
 	};
 
-	console.log(id);
 	return (
 		<div>
 			{/* <Loader open={loading} /> */}
-			{/* <InputFields title={title} setTitle={setTitle} text={text} setText={setText} titlePage='Редактирование поста' />
-			<button onClick={editContactHandler} style={{ margin: '20px 0' }} variant='contained' color='primary'>
-				Изменить
-			</button> */}
-            <div className='row'>
-                <div className='col s6 offset-s3'>
-                    <h1>Редактирование контакта</h1>
-                    <div className="input-field">
-                        <input 
-                            placeholder="Имя" 
-                            id="name" 
-                            type="text" 
-                            value={name}
-                            onChange={e => setName(e.target.value)} />
-                        <label htmlFor='link'>Введите имя</label>
-                    </div>
-                    <div className="input-field">
-                        <input 
-                            placeholder="Телефон" 
-                            id="phone" 
-                            type="text" 
-                            value={phone}
-                            onChange={e => setPhone(e.target.value)} />
-                        <label htmlFor='link'>Введите телефон</label>
-                    </div>
-                    <button className="blue darken-1 btn" onClick={editContactHandler}>Изменить</button> 
-                </div>                           
-            </div>   
+			<InputFields 
+				name={name} 
+				setName={setName} 
+				phone={phone} 
+				setPhone={setPhone} 
+				handler={editContactHandler}
+				title='Редактирование контакта'
+				button='Изменить' />  
 		</div>
 	);
 }
