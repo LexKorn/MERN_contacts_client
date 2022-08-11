@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-// import { useHttp } from '../hooks/http.hook';
-// import { AuthContext } from '../context/AuthContext';
+import { useHttp } from '../hooks/http.hook';
+import { AuthContext } from '../context/AuthContext';
 import { BACK_URL } from '../config/default';
 
 import './contactsPage.sass';
 
 
 export const ContactsPage = () => {
-    // const auth = useContext(AuthContext);
-    // const {request} = useHttp();
+    const auth = useContext(AuthContext);
+    const {request} = useHttp();
+    const {token} = useContext(AuthContext);
+
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [contacts, setContacts] = useState([]);
@@ -27,23 +29,28 @@ export const ContactsPage = () => {
 		}
 
 		try {
-			const response = await fetch(`${BACK_URL}/post`, {
-				method: 'POST',
-				headers: {
-					'Content-type': 'application/json'
-				},
-				body: JSON.stringify({ name, phone })                
-			});
+			// const response = await fetch(`${BACK_URL}/post`, {
+			// 	method: 'POST',
+			// 	headers: {
+			// 		'Content-type': 'application/json'
+			// 	},
+			// 	body: JSON.stringify({ name, phone })                
+			// });
 
-			const data = await response.json();
+            const response = await request(`${BACK_URL}/post`, 'POST', {
+                Authorization: `Bearer ${token}`,
+                // body: JSON.stringify({ name, phone }) 
+            });
+
+			// const data = await response.json();
 
 			if (response.status !== 200) {
-				console.error(data);
+				console.error(response);
 			}
 
 			setName('');
 			setPhone('');
-			console.log('Success', data);
+			console.log('Success', response);
             fetchContacts();
 
 		} catch(err) {
@@ -55,30 +62,50 @@ export const ContactsPage = () => {
     // GET contact
     useEffect(() => {
 		fetchContacts();
-	}, []);
+	}, [token, request]);
 
 	const fetchContacts = async () => {
-		fetch(`${BACK_URL}`)
-			.then((json) => json.json())
+		// fetch(`${BACK_URL}`)
+		// 	.then((json) => json.json())
+		// 	.then((data) => {
+		// 		console.log('contacts', data);
+		// 		setContacts(data);
+		// 	})
+		// 	.catch((err) => console.error(err))
+
+        await request(`${BACK_URL}`, 'GET', null, {
+            Authorization: `Bearer ${token}`
+        })
+            // .then((json) => json.json())
 			.then((data) => {
 				console.log('contacts', data);
 				setContacts(data);
 			})
-			.catch((err) => console.error(err))
+			.catch((err) => console.error(err));
 	};
 
 
     // DELETE contact
 	const removeContactHandler = (id) => {
-		fetch(`${BACK_URL}/post-delete/${id}`, {
-			method: 'DELETE',
-		})
-			.then((json) => json.json())
+		// fetch(`${BACK_URL}/post-delete/${id}`, {
+		// 	method: 'DELETE',
+		// })
+		// 	.then((json) => json.json())
+		// 	.then((data) => {
+		// 		console.log(data);
+		// 		fetchContacts();
+		// 	})
+		// 	.catch((err) => console.error(err));
+
+        request(`${BACK_URL}/post-delete/${id}`, 'DELETE', null, {
+            Authorization: `Bearer ${token}`
+        })
+            // .then((json) => json.json())
 			.then((data) => {
 				console.log(data);
 				fetchContacts();
 			})
-			.catch((err) => console.error(err))
+			.catch((err) => console.error(err));
 	};
 
 
