@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
-// import { useHttp } from '../hooks/http.hook';
-// import { AuthContext } from '../context/AuthContext';
+import { useHttp } from '../hooks/http.hook';
+import { useAuth } from '../hooks/auth.hook';
+import { AuthContext } from '../context/AuthContext';
 import { InputFields } from '../components/InputFields';
+// import { Loader } from '../components/Loader';
 import { BACK_URL } from '../config/default';
 
 import './contactsPage.sass';
 
 
 export const ContactsPage = () => {
-    // const auth = useContext(AuthContext);
+    // const {token} = useContext(AuthContext);
+    const {token} = useAuth();
     // const {request} = useHttp();
+    // const {loading} = useHttp();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [contacts, setContacts] = useState([]);
@@ -31,8 +35,12 @@ export const ContactsPage = () => {
 		try {
 			const response = await fetch(`${BACK_URL}/post`, {
 				method: 'POST',
+                // mode: 'no-cors',
+                // credentials: 'include',
+                // Authorization: `Bearer ${token}`,
 				headers: {
-					'Content-type': 'application/json'
+					'Content-type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
 				},
 				body: JSON.stringify({ name, phone })                
 			});
@@ -60,7 +68,15 @@ export const ContactsPage = () => {
 	}, []);
 
 	const fetchContacts = async () => {
-		fetch(`${BACK_URL}`)
+		fetch(`${BACK_URL}`, {
+            // method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            credentials: 'include',
+            // Authorization: `Bearer ${token}`,
+        })
 			.then((json) => json.json())
 			.then((data) => {
 				console.log('contacts', data);
@@ -73,7 +89,13 @@ export const ContactsPage = () => {
     // DELETE contact
 	const removeContactHandler = (id) => {
 		fetch(`${BACK_URL}/post-delete/${id}`, {
-			method: 'DELETE',
+            method: 'DELETE',
+            // credentials: 'include',
+            // Authorization: `Bearer ${token}`,
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },			
 		})
 			.then((json) => json.json())
 			.then((data) => {
