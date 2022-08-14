@@ -9,7 +9,6 @@ import { BACK_URL } from '../config/default';
 
 export function EditPage() {
 	const {request} = useHttp();
-	const auth = useContext(AuthContext);
     const {token} = useContext(AuthContext);
 	const { id } = useParams();
 	const [name, setName] = useState('');
@@ -22,21 +21,10 @@ export function EditPage() {
     }, []);
 
 	useEffect(() => {
-		// fetch(`${BACK_URL}/post-update/${id}`)
-		// 	.then((json) => json.json())
-		// 	.then((data) => {
-		// 		console.log(data);
-		// 		setName(data.name);
-		// 		setPhone(data.phone);
-		// 	})
-		// 	.catch((err) => console.error(err))
-
 		request(`${BACK_URL}/post-update/${id}`, 'GET', null, {
 			Authorization: `Bearer ${token}`
 		})
-			// .then((json) => json.json())
 			.then((data) => {
-				console.log(data);
 				setName(data.name);
 				setPhone(data.phone);
 			})
@@ -45,31 +33,15 @@ export function EditPage() {
 
 	const editContactHandler = async () => {
 		try {
-			// const response = await fetch(`${BACK_URL}/post-update`, {
-			// 	method: 'PUT',
-			// 	headers: {
-			// 		'Content-type': 'application/json',
-			// 	},
-			// 	body: JSON.stringify({ name, phone, contactId: id }),
-			// });
-
-			const response = await request(`${BACK_URL}/post-update`, 'PUT', {
+			const response = await request(`${BACK_URL}/post-update`, 'PUT', {name, phone, contactId: id}, {
 				Authorization: `Bearer ${token}`
 			})
-				// .then((json) => json.json())
-				// .then((data) => {
-				// 	console.log('contacts', data);
-				// 	setContacts(data);
-				// })
-				// .catch((err) => console.error(err));
 
-			// const data = await response.json();
+			// if (response.status !== 200) {
+			// 	return console.error(response);
+			// }
 
-			if (response.status !== 200) {
-				return console.error(response);
-			}
-
-			console.log(response);
+			// console.log(response);
             navigate('/');
 
 		} catch (err) {

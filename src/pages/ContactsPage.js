@@ -8,7 +8,6 @@ import './contactsPage.sass';
 
 
 export const ContactsPage = () => {
-    const auth = useContext(AuthContext);
     const {request} = useHttp();
     const {token} = useContext(AuthContext);
 
@@ -29,20 +28,9 @@ export const ContactsPage = () => {
 		}
 
 		try {
-			// const response = await fetch(`${BACK_URL}/post`, {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-type': 'application/json'
-			// 	},
-			// 	body: JSON.stringify({ name, phone })                
-			// });
-
-            const response = await request(`${BACK_URL}/post`, 'POST', {
+            const response = await request(`${BACK_URL}/post`, 'POST', {name, phone}, {
                 Authorization: `Bearer ${token}`,
-                // body: JSON.stringify({ name, phone }) 
             });
-
-			// const data = await response.json();
 
 			if (response.status !== 200) {
 				console.error(response);
@@ -50,7 +38,7 @@ export const ContactsPage = () => {
 
 			setName('');
 			setPhone('');
-			console.log('Success', response);
+			// console.log('Success', response);
             fetchContacts();
 
 		} catch(err) {
@@ -65,20 +53,11 @@ export const ContactsPage = () => {
 	}, [token, request]);
 
 	const fetchContacts = async () => {
-		// fetch(`${BACK_URL}`)
-		// 	.then((json) => json.json())
-		// 	.then((data) => {
-		// 		console.log('contacts', data);
-		// 		setContacts(data);
-		// 	})
-		// 	.catch((err) => console.error(err))
-
         await request(`${BACK_URL}`, 'GET', null, {
             Authorization: `Bearer ${token}`
         })
-            // .then((json) => json.json())
 			.then((data) => {
-				console.log('contacts', data);
+				// console.log('contacts', data);
 				setContacts(data);
 			})
 			.catch((err) => console.error(err));
@@ -87,22 +66,11 @@ export const ContactsPage = () => {
 
     // DELETE contact
 	const removeContactHandler = (id) => {
-		// fetch(`${BACK_URL}/post-delete/${id}`, {
-		// 	method: 'DELETE',
-		// })
-		// 	.then((json) => json.json())
-		// 	.then((data) => {
-		// 		console.log(data);
-		// 		fetchContacts();
-		// 	})
-		// 	.catch((err) => console.error(err));
-
         request(`${BACK_URL}/post-delete/${id}`, 'DELETE', null, {
             Authorization: `Bearer ${token}`
         })
-            // .then((json) => json.json())
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				fetchContacts();
 			})
 			.catch((err) => console.error(err));
