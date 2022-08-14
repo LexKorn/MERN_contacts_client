@@ -12,8 +12,7 @@ import './contactsPage.sass';
 
 
 export const ContactsPage = () => {
-    // const {token} = useContext(AuthContext);
-    const {token} = useAuth();
+    const {token} = useContext(AuthContext);
     // const {request} = useHttp();
     // const {loading} = useHttp();
     const [name, setName] = useState('');
@@ -35,9 +34,6 @@ export const ContactsPage = () => {
 		try {
 			const response = await fetch(`${BACK_URL}/post`, {
 				method: 'POST',
-                // mode: 'no-cors',
-                // credentials: 'include',
-                // Authorization: `Bearer ${token}`,
 				headers: {
 					'Content-type': 'application/json',
                     'Authorization': `Bearer ${token}`,
@@ -53,7 +49,6 @@ export const ContactsPage = () => {
 
 			setName('');
 			setPhone('');
-			console.log('Success', data);
             fetchContacts();
 
 		} catch(err) {
@@ -65,21 +60,18 @@ export const ContactsPage = () => {
     // GET contact
     useEffect(() => {
 		fetchContacts();
-	}, []);
+	}, [token]);
 
 	const fetchContacts = async () => {
 		fetch(`${BACK_URL}`, {
-            // method: 'GET',
+            method: 'GET',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-            credentials: 'include',
-            // Authorization: `Bearer ${token}`,
         })
 			.then((json) => json.json())
 			.then((data) => {
-				console.log('contacts', data);
 				setContacts(data);
 			})
 			.catch((err) => console.error(err))
@@ -90,8 +82,6 @@ export const ContactsPage = () => {
 	const removeContactHandler = (id) => {
 		fetch(`${BACK_URL}/post-delete/${id}`, {
             method: 'DELETE',
-            // credentials: 'include',
-            // Authorization: `Bearer ${token}`,
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${token}`,

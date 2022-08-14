@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { InputFields } from '../components/InputFields';
 import { BACK_URL } from '../config/default';
+import { AuthContext } from '../context/AuthContext';
 // import { Loader } from '../components/Loader';
 
 export function EditPage() {
 	const { id } = useParams();
 	const [name, setName] = useState('');
 	const [phone, setPhone] = useState('');
+	const {token} = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -17,15 +19,20 @@ export function EditPage() {
     }, []);
 
 	useEffect(() => {
-		fetch(`${BACK_URL}/post/${id}`)
+		fetch(`${BACK_URL}/post/${id}`, {
+			method: 'GET',
+			headers: {
+				'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+			}
+		})
 			.then((json) => json.json())
 			.then((data) => {
-				console.log(data);
 				setName(data.name);
 				setPhone(data.phone);
 			})
 			.catch((err) => console.error(err))
-	}, [id]);
+	}, [id, token]);
 
 	const editContactHandler = async () => {
 		try {
@@ -33,6 +40,7 @@ export function EditPage() {
 				method: 'PUT',
 				headers: {
 					'Content-type': 'application/json',
+					'Authorization': `Bearer ${token}`
 				},
 				body: JSON.stringify({ name, phone, contactId: id }),
 			});
@@ -42,8 +50,6 @@ export function EditPage() {
 			if (response.status !== 200) {
 				return console.error(data);
 			}
-
-			console.log(data);
             navigate('/');
 
 		} catch (err) {
