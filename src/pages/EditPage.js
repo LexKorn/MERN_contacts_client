@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { InputFields } from '../components/InputFields';
 import { BACK_URL } from '../config/default';
 import { AuthContext } from '../context/AuthContext';
-// import { Loader } from '../components/Loader';
+
 
 export function EditPage() {
 	const { id } = useParams();
@@ -59,7 +59,6 @@ export function EditPage() {
 
 	return (
 		<div>
-			{/* <Loader open={loading} /> */}
 			<InputFields 
 				name={name} 
 				setName={setName} 

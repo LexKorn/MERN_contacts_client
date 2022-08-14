@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { useHttp } from '../hooks/http.hook';
-import { useAuth } from '../hooks/auth.hook';
 import { AuthContext } from '../context/AuthContext';
 import { InputFields } from '../components/InputFields';
-// import { Loader } from '../components/Loader';
 import { BACK_URL } from '../config/default';
 
 import './contactsPage.sass';
@@ -13,8 +10,6 @@ import './contactsPage.sass';
 
 export const ContactsPage = () => {
     const {token} = useContext(AuthContext);
-    // const {request} = useHttp();
-    // const {loading} = useHttp();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [contacts, setContacts] = useState([]);
