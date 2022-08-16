@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { NavLink } from 'react-router-dom';
 
 import { AuthContext } from '../context/AuthContext';
 import { InputFields } from '../components/InputFields';
+import { ContactsList } from '../components/ContactsList';
 import { BACK_URL } from '../config/default';
 
 import './contactsPage.sass';
@@ -101,26 +101,7 @@ export const ContactsPage = () => {
                 handler={createContactHandler} 
                 title='Создай контакт'
                 button='Создать' /> 
-            <div className='row'>
-                <ul className="col s6 offset-s3 collection z-depth-4">
-                    {contacts.map((contact) => (
-                        <li className="collection-item contact" key={contact._id}>
-                            <div className="contact_text">
-                                <div><b>{contact.name}</b></div>
-                                <div>{contact.phone}</div> 
-                            </div>                           
-                            <div className="contact_icons">
-                                <NavLink to={`/post/${contact._id}`}>
-                                    <i className="material-icons">mode_edit</i>
-                                </NavLink>    
-                                <i className="material-icons" 
-                                    onClick={() => removeContactHandler(contact._id)}>delete_forever
-                                </i>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </div>         
+            <ContactsList contacts={contacts} handler={removeContactHandler} />          
         </div>
     );
 };
