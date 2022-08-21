@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { InputFields } from '../components/InputFields';
 import { ContactsList } from '../components/ContactsList';
+import { SearchPanel } from '../components/SearchPanel';
+import { useMessage } from '../hooks/message.hook';
 import { BACK_URL } from '../config/default';
 
 import './contactsPage.sass';
@@ -10,9 +12,12 @@ import './contactsPage.sass';
 
 export const ContactsPage = () => {
     const {token} = useContext(AuthContext);
+    const message = useMessage();
+
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [contacts, setContacts] = useState([]);
+    const [nameInput, setNameInput] = useState('');
 
     useEffect(() => {
         window.M.updateTextFields();
@@ -22,8 +27,7 @@ export const ContactsPage = () => {
     // POST contact
     const createContactHandler = async () => {
         if (!name.trim() || !phone.trim()) {
-			alert('Все поля обязательны для заполнения');
-			return console.error('Все поля обязательны для заполнения');
+			return message('Все поля обязательны для заполнения');
 		}
 
 		try {
@@ -84,12 +88,24 @@ export const ContactsPage = () => {
 		})
 			.then((json) => json.json())
 			.then((data) => {
-				console.log(data);
 				fetchContacts();
 			})
 			.catch((err) => console.error(err))
 	};
 
+
+    // SEARCH contact
+    const searchContacts = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+
+        return items.filter(item => {
+            return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1;
+        });
+    };
+
+    const visibleData = searchContacts(contacts, nameInput);
 
     return (
         <div>
@@ -101,7 +117,8 @@ export const ContactsPage = () => {
                 handler={createContactHandler} 
                 title='Создай контакт'
                 button='Создать' /> 
-            <ContactsList contacts={contacts} handler={removeContactHandler} />          
+            <SearchPanel name={nameInput} setName={setNameInput} />
+            <ContactsList contacts={visibleData} handler={removeContactHandler} />          
         </div>
     );
 };

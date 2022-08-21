@@ -16,11 +16,11 @@ export const Navbar = () => {
     return (
         <nav>
             <div className="nav-wrapper blue darken-1" style={{padding: '0 2rem'}}>
-            <a href="/" className="brand-logo">Книга контактов</a>
-            <ul id="nav-mobile" className="right hide-on-med-and-down" >       
-                {/* <li><NavLink to="/contacts">Контакты</NavLink></li> */}
-                <li><a href='/' onClick={logoutHandler}>Выйти</a></li>
-            </ul>
+                <a href="/" className="brand-logo">Книга контактов</a>
+                <ul id="nav-mobile" className="right">       
+                    {/* <li><NavLink to="/contacts">Контакты</NavLink></li> */}
+                    <li><a href='/' onClick={logoutHandler}>Выйти</a></li>
+                </ul>
             </div>
         </nav>
     );

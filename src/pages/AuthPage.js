@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
+
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
 import { AuthContext } from '../context/AuthContext';
+import { AuthInputFields } from '../components/AuthInputFields';
+
 
 export const AuthPage = () => {
     const auth = useContext(AuthContext);
@@ -48,31 +51,9 @@ export const AuthPage = () => {
                         <div className="card-content white-text">
                             <span className="card-title">Авторизация</span>
                             <div>
-                                <div className="input-field">
-                                    <input 
-                                        placeholder="Введите email" 
-                                        id="email" 
-                                        type="text" 
-                                        name='email'
-                                        className='yellow-input'
-                                        value={form.email}
-                                        onChange={changeHandler}
-                                    />
-                                    <label htmlFor='email'>Email</label>
-                                </div>
-                                <div className="input-field">
-                                    <input 
-                                        placeholder="Введите пароль" 
-                                        id="email" 
-                                        type="password" 
-                                        name='password'
-                                        className='yellow-input'
-                                        value={form.password}
-                                        onChange={changeHandler}
-                                    />
-                                    <label htmlFor='email'>Пароль</label>
-                                </div>
-
+                                <AuthInputFields title="email" value={form.email} handler={changeHandler} />
+                                <AuthInputFields title="password" value={form.password} handler={changeHandler} />
+                            
                             </div>
                         </div>
                         <div className="card-action">
