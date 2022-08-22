@@ -4,10 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { InputFields } from '../components/InputFields';
 import { BACK_URL } from '../config/default';
 import { AuthContext } from '../context/AuthContext';
+import { useMessage } from '../hooks/message.hook';
 
 
 export function EditPage() {
 	const { id } = useParams();
+	const message = useMessage();
+	
 	const [name, setName] = useState('');
 	const [phone, setPhone] = useState('');
 	const {token} = useContext(AuthContext);
@@ -35,6 +38,10 @@ export function EditPage() {
 	}, [id, token]);
 
 	const editContactHandler = async () => {
+		if (!name.trim() || !phone.trim()) {
+			return message('Все поля обязательны для заполнения');
+		}
+		
 		try {
 			const response = await fetch(`${BACK_URL}/post-update`, {
 				method: 'PUT',
