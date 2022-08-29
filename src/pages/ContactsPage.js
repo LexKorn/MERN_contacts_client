@@ -19,11 +19,6 @@ export const ContactsPage = () => {
     const [contacts, setContacts] = useState([]);
     const [nameInput, setNameInput] = useState('');
 
-    useEffect(() => {
-        window.M.updateTextFields();
-    }, []);
-
-
     // POST contact
     const createContactHandler = async () => {
         if (!name.trim() || !phone.trim()) {

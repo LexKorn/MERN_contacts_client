@@ -1,4 +1,18 @@
+import { useEffect } from 'react';
+
 export const InputFields = ({name, setName, phone, setPhone, handler, title, button}) => {
+    useEffect(() => {
+        window.M.updateTextFields();
+    }, []);
+
+    const keyPress = (e) => {
+        const code = e.keyCode || e.which;
+
+        if (code === 13) {
+            handler()
+        }
+    };
+
     return (
         <>
             <div className='row'>
@@ -10,7 +24,8 @@ export const InputFields = ({name, setName, phone, setPhone, handler, title, but
                             id="name" 
                             type="text" 
                             value={name}
-                            onChange={e => setName(e.target.value)} />
+                            onChange={e => setName(e.target.value)}
+                            onKeyPress={e => keyPress(e)} />
                         <label htmlFor='link'>Введите имя</label>
                     </div>
                     <div className="input-field">
@@ -19,7 +34,8 @@ export const InputFields = ({name, setName, phone, setPhone, handler, title, but
                             id="phone" 
                             type="text" 
                             value={phone}
-                            onChange={e => setPhone(e.target.value)} />
+                            onChange={e => setPhone(e.target.value)}
+                            onKeyPress={e => keyPress(e)} />
                         <label htmlFor='link'>Введите телефон</label>
                     </div>
                     <button className="blue darken-1 btn" onClick={handler}>{button}</button> 

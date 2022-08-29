@@ -1,4 +1,10 @@
+import { useEffect } from 'react';
+
 export const AuthInputFields = ({title, value, handler}) => {
+    useEffect(() => {
+        window.M.updateTextFields();
+    }, []);
+
     return (
         <>
             <div className="input-field">
